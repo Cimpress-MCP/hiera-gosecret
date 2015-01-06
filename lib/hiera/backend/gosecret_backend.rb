@@ -33,7 +33,7 @@ class Hiera
       GOSECRET_REGEX = /\[(gosecret(\|[^\]\|]*){4})\]/
 
       def decrypt(value)
-        `gosecret-decrypt #{Config[:gosecret][:keydir]} #{value}`
+        `gosecret-decrypt "#{Config[:gosecret][:keydir]}" "#{value}"`
       end
 
     end
