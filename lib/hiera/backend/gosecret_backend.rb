@@ -27,7 +27,7 @@ class Hiera
           answer = b.lookup(key, scope, order_override, resolution_type)
           break if answer != nil
         end
-        Hiera.debug("answer: #{answer} resolution_type: #{resolution_type}")
+        Hiera.debug("Found gosecret encrypted value at #{key}: #{answer}")
         # decrypt(answer)
         case resolution_type
         when :array
