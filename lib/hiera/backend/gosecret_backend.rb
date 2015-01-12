@@ -27,29 +27,30 @@ class Hiera
           answer = b.lookup(key, scope, order_override, resolution_type)
           break if answer != nil
         end
-        Hiera.debug("Found gosecret encrypted value at #{key}: #{answer}")
-        # decrypt(answer)
+        return answer if answer == nil
+
+        new_answer = nil
         case resolution_type
         when :array
           new_answer ||= []
           answer.each do |item|
             new_answer << decrypt(item) || item
           end
-          return new_answer
         when :hash
           # TODO: Verify if this works for nested hashes
           new_answer ||= {}
           answer.each do |key, value|
             new_answer[key] = decrypt(value) || value
           end
-          return new_answer
         else
-          return decrypt(answer)
+          new_answer = decrypt(answer)
         end
+        return new_answer
       end
 
       def decrypt(value)
         if value != nil and value.is_a?(String) and /\[(gosecret(\|[^\]\|]*){4})\]/.match(value)
+          Hiera.debug("Decrypting gosecret encrypted value: #{value}")
           `gosecret-decrypt "#{Config[:gosecret][:keydir]}" "#{value}"`
         end
       end

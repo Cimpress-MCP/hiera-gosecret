@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |gem|
   gem.name         = "hiera-gosecret"
-  gem.version      = "0.2.1"
+  gem.version      = "0.2.2"
   gem.executables << "gosecret-decrypt" << "gosecret-linux-x64"
   gem.description  = "Hiera backend for decrypting gosecret-encrypted values"
   gem.summary      = "Hiera gosecret backend"
