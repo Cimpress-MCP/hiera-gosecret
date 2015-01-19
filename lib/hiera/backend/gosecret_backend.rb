@@ -32,39 +32,13 @@ class Hiera
         new_answer = nil
         case resolution_type
         when :array
-          new_answer ||= []
-          answer.each do |item|
-            new_answer << decrypt(item) || item
-          end
+          new_answer = decrypt_array(answer)
         when :hash
-          # TODO: Verify if this works for nested hashes
-          Hiera.debug("--- Got to block")
-          new_answer = iterate(answer)
-          Hiera.debug("--- #{new_answer}")
-          # answer.each do |key, value|
-          #   new_answer[key] = decrypt(value) || value
-          # end
+          new_answer = decrypt_hash(answer)
         else
           new_answer = decrypt(answer)
         end
         return new_answer
-      end
-
-      def iterate(collection)
-        collection.each do |key, v|
-          # Value is the key if an array is being iterated
-          value = v || key
-
-          if value.is_a?(Hash) || value.is_a?(Array)
-            collection[key] = iterate(value)
-          else
-            if v
-              collection[key] = decrypt(value) || value
-            else
-              value.replace(decrypt(value) || value)
-            end
-          end
-        end
       end
 
       def decrypt_hash(hash)
@@ -74,7 +48,7 @@ class Hiera
       end
 
       def decrypt_array(array)
-        array.each do |value|
+        array.map do |value|
           value.is_a?(Array) ? decrypt_array(value) : ( value.is_a?(Hash) ? decrypt_hash(value) : decrypt(value) || value )
         end
       end
