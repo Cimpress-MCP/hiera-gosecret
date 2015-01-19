@@ -38,20 +38,51 @@ class Hiera
           end
         when :hash
           # TODO: Verify if this works for nested hashes
-          new_answer ||= {}
-          answer.each do |key, value|
-            new_answer[key] = decrypt(value) || value
-          end
+          Hiera.debug("--- Got to block")
+          new_answer = iterate(answer)
+          Hiera.debug("--- #{new_answer}")
+          # answer.each do |key, value|
+          #   new_answer[key] = decrypt(value) || value
+          # end
         else
           new_answer = decrypt(answer)
         end
         return new_answer
       end
 
-      def decrypt(value)
+      def iterate(collection)
+        collection.each do |key, v|
+          # Value is the key if an array is being iterated
+          value = v || key
+
+          if value.is_a?(Hash) || value.is_a?(Array)
+            collection[key] = iterate(value)
+          else
+            if v
+              collection[key] = decrypt(value) || value
+            else
+              value.replace(decrypt(value) || value)
+            end
+          end
+        end
+      end
+
+      def decrypt_hash(hash)
+        hash.each do |key, value|
+          value.is_a?(Hash) ? decrypt_hash(value) : ( value.is_a?(Array) ? (hash[key] = decrypt_array(value) || value) : (hash[key] = decrypt(value) || value) )
+        end
+      end
+
+      def decrypt_array(array)
+        array.each do |value|
+          value.is_a?(Array) ? decrypt_array(value) : ( value.is_a?(Hash) ? decrypt_hash(value) : decrypt(value) || value )
+        end
+      end
+
+      def decrypt(value)  
         if value != nil and value.is_a?(String) and /\[(gosecret(\|[^\]\|]*){4})\]/.match(value)
           Hiera.debug("Decrypting gosecret encrypted value: #{value}")
-          `gosecret-decrypt "#{Config[:gosecret][:keydir]}" "#{value}"`
+          return `gosecret-decrypt "#{Config[:gosecret][:keydir]}" "#{value}"`
         end
       end
     end
