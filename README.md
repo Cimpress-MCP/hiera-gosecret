@@ -1,5 +1,7 @@
 # Hiera-gosecret
 
+[![Gem Version](https://badge.fury.io/rb/hiera-gosecret.svg)](http://badge.fury.io/rb/hiera-gosecret)
+
 This hiera backend provides support for decrypting values that were encrypted using gosecret.
 
 ## Notes
