@@ -56,7 +56,8 @@ class Hiera
       def decrypt(value)  
         if value != nil and value.is_a?(String) and /\[(gosecret(\|[^\]\|]*){4})\]/.match(value)
           Hiera.debug("Decrypting gosecret encrypted value: #{value}")
-          return `gosecret-decrypt "#{Config[:gosecret][:keydir]}" "#{value}"`
+          args = "-mode=decrypt -keystore=\"#{Config[:gosecret][:keydir]}\" -value=\"#{value}\""
+          return `gosecret #{args}`
         end
       end
     end
