@@ -1,6 +1,7 @@
 # Hiera-gosecret
 
 This hiera backend provides support for decrypting values that were encrypted using gosecret.
+This plugin also install gosecret-cli to be directly used via shell command. This provides full functionality of gosecret, including encryption.
 
 ## Notes
 
