@@ -56,9 +56,20 @@ class Hiera
       def decrypt(value)
         if value != nil and value.is_a?(String) and ( /\[(gosecret(\|[^\]\|]*){4})\]/.match(value) or /{{ *goDecrypt .*}}/.match(value) )
           Hiera.debug("Decrypting gosecret encrypted value: #{value}")
-          args = "-mode=decrypt -keystore=\"#{Config[:gosecret][:keydir]}\" -value=\"#{value}\""
+          args = "-mode=decrypt -keystore=\"#{Config[:gosecret][:keydir]}\" -value='#{value}'"
           return `gosecret #{args}`
         end
+      end
+
+      def which(cmd)
+        exts = ENV['PATHEXT'] ? ENV['PATHEXT'].split(';') : ['']
+        ENV['PATH'].split(File::PATH_SEPARATOR).each do |path|
+          exts.each { |ext|
+            exe = File.join(path, "#{cmd}#{ext}")
+            return exe if File.executable?(exe) && !File.directory?(exe)
+          }
+        end
+        return nil
       end
     end
   end
