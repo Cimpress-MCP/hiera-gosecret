@@ -1,5 +1,10 @@
 # -*- encoding: utf-8 -*-
 
+lib = File.expand_path('../lib/', __FILE__)
+$:.unshift lib unless $:.include?(lib)
+
+require 'hiera/backend/gosecret/version'
+
 Gem::Specification.new do |gem|
   gem.name        = "hiera-gosecret"
   gem.version     = Hiera::Backend::Gosecret::VERSION
