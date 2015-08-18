@@ -8,7 +8,7 @@ require 'hiera/backend/gosecret/version'
 Gem::Specification.new do |gem|
   gem.name        = "hiera-gosecret"
   gem.version     = Hiera::Backend::Gosecret::VERSION
-  gem.executables = ['gosecret'] # gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
+  gem.executables = ['gosecret']
   gem.description = "Hiera backend for decrypting gosecret-encrypted values"
   gem.summary     = "Hiera gosecret backend"
   gem.author      = "Calvin Leung Huang"
