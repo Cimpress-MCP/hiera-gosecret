@@ -1,0 +1,8 @@
+deploy:
+  provider: rubygems
+  api_key:
+    secure: STDa6kMLc9+mK/eOcCE9dK5mQs3dhuAsigbx46Tp7j+oY9xEkj8sCWdrBAyOQuZ4fZgLT6BJo6jW58NCbAyAXLYI9GINHpRLaAJA113+oQLMH12OUvZTgc2aDQl+pUvkn+almWl52jdfgKQNa7x7ksLCbf+UJYlHU/bHuFMTmTU=
+  gem: hiera-gosecret
+  on:
+    tags: true
+    repo: Cimpress-MCP/hiera-gosecret
