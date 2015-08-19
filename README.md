@@ -13,4 +13,4 @@ To avoid inconsistency and incompatibility in OpenSSL versions from Ruby, the go
 
 ## Support
 
-This gem supports on linux_x64, windows, and darwin operating systems.
+This gem supports linux_x64, windows, and darwin operating systems.
